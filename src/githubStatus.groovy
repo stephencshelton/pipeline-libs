@@ -1,3 +1,20 @@
+/*
+Author: Stephen Shelton
+
+Purpose: This was made to add a status to Github commits because the setBuildStatus step wasn't respecting no_proxy variables which broke it when you needed a proxy for other steps of the build, mainly for use with GHE
+Usage:
+
+The following need to be set before you call createStatus()
+-globalStatus ('success', 'pending', 'failure', 'error)
+-globalGitCommit (Full sha of commit)
+-globalToken (Github Personal Access Token for account with repo:status write ability)
+-globalRepoName (Repo name without the .git at the end)
+
+Requirements:
+Needs a machine with curl
+*/
+
+//TODO: Change package name to  library path
 package some.path;
 import groovy.transform.Field;
 
