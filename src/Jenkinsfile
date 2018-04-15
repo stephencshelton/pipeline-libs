@@ -19,11 +19,11 @@ def printInfo() {
 pipeline {
   agent none
   stages {
-    def buildStatus = true
     stage('testing') {
     agent { label 'master' }
       steps {
         script {
+          def buildStatus = true
           try {
             printInfo() 
           }
