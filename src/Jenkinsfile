@@ -48,11 +48,11 @@ pipeline {
           if(buildStatus) {
             //TODO implement slack notifier class or talk with jon about the plugin, 
             //slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-            println "Build Status: ${buildStatus}
+            println "Build Status: ${buildStatus}"
           }
           else {
             //Open issue on failure and close PR to prevent spamming
-            println "Build Status: ${buildStatus}
+            println "Build Status: ${buildStatus}"
             //slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
           }
         }
