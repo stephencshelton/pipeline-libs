@@ -22,9 +22,18 @@ pipeline {
     stage('testing') {
     agent { label 'master' }
       steps {
-        script {
-            printInfo
-        }
+        printInfo()      
+      }
+    }
+    post {
+      //TODO: Find sane way to correlate github names to slack names, maybe Full Names except Jon
+      success {
+        slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      }
+
+      failure {
+        //Open issue on failure and close PR to prevent spamming
+        slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
       }
     }
   }
