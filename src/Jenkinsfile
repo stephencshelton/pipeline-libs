@@ -1,15 +1,15 @@
 def printInfo() {
   def items = [
-  ghprbActualCommit
-  ghprbActualCommitAuthor
-  ghprbActualCommitAuthorEmail
-  ghprbPullDescription
-  ghprbPullId
-  ghprbPullLink
-  ghprbPullTitle
-  ghprbSourceBranch
-  ghprbTargetBranch
-  ghprbCommentBody
+  ghprbActualCommit,
+  ghprbActualCommitAuthor,
+  ghprbActualCommitAuthorEmail,
+  ghprbPullDescription,
+  ghprbPullId,
+  ghprbPullLink,
+  ghprbPullTitle,
+  ghprbSourceBranch,
+  ghprbTargetBranch,
+  ghprbCommentBody,
   sha1
   ]
   items.each { item ->
