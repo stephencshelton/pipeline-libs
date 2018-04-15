@@ -46,11 +46,14 @@ pipeline {
       //TODO: Find sane way to correlate github names to slack names, maybe Full Names except Jon
         script {
           if(buildStatus) {
-            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            //TODO implement slack notifier class or talk with jon about the plugin, 
+            //slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            println "Build Status: ${buildStatus}
           }
           else {
             //Open issue on failure and close PR to prevent spamming
-            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            println "Build Status: ${buildStatus}
+            //slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
           }
         }
       }
