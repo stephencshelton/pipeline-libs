@@ -19,19 +19,24 @@ def printInfo() {
 pipeline {
   agent none
   stages {
+    def buildStatus = true
     stage('testing') {
     agent { label 'master' }
       steps {
-        printInfo()      
+        try {
+          printInfo() 
+        }
+        catch (err) {
+          buildStatus = false
+        }
       }
     }
-    post {
-      //TODO: Find sane way to correlate github names to slack names, maybe Full Names except Jon
-      success {
-        slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    stage('notification') {
+    //TODO: Find sane way to correlate github names to slack names, maybe Full Names except Jon
+      if buildStatus {
+        slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
       }
-
-      failure {
+      else {
         //Open issue on failure and close PR to prevent spamming
         slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
       }
