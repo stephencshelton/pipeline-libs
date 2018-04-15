@@ -33,7 +33,7 @@ pipeline {
     }
     stage('notification') {
     //TODO: Find sane way to correlate github names to slack names, maybe Full Names except Jon
-      if buildStatus {
+      if(buildStatus) {
         slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
       }
       else {
