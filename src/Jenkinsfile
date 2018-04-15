@@ -1,0 +1,29 @@
+def printInfo() {
+  def items = [
+  ghprbActualCommit
+  ghprbActualCommitAuthor
+  ghprbActualCommitAuthorEmail
+  ghprbPullDescription
+  ghprbPullId
+  ghprbPullLink
+  ghprbPullTitle
+  ghprbSourceBranch
+  ghprbTargetBranch
+  ghprbCommentBody
+  sha1
+  ]
+  items.each { item ->
+  println item
+  }
+pipeline {
+  stages {
+    stage('testing') {
+    agent { label 'master' }
+      steps {
+        script {
+            printInfo
+        }
+      }
+    }
+  }
+}
