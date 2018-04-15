@@ -17,6 +17,7 @@ def printInfo() {
   }
 }
 pipeline {
+  agent none
   stages {
     stage('testing') {
     agent { label 'master' }
