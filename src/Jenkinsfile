@@ -15,6 +15,7 @@ def printInfo() {
   items.each { item ->
   println item
   }
+}
 pipeline {
   stages {
     stage('testing') {
