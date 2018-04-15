@@ -34,6 +34,7 @@ pipeline {
       }
     }
     stage('notification') {
+      agent { label 'master' }
       steps {
       //TODO: Find sane way to correlate github names to slack names, maybe Full Names except Jon
         script {
