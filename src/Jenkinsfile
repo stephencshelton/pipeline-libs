@@ -34,7 +34,7 @@ pipeline {
               GithubIssue githubIssue = new GithubIssue()
               githubIssue.setIssueBody("testing things")
               githubIssue.setIssueTitle("Issue Title: ${ghprbSourceBranch}")
-              githubIssue.setAuthor(ghprbActualCommitAuthor)
+              githubIssue.setAuthor([ghprbActualCommitAuthor])
               githubIssue.setToken(TOKEN)
               githubIssue.setOrgName('stephencshelton')
               githubIssue.setRepoName('pipeline-libs')
