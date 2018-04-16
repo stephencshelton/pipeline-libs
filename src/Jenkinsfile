@@ -39,6 +39,7 @@ pipeline {
               githubIssue.setOrgName('stephencshelton')
               githubIssue.setRepoName('pipeline-libs')
               githubIssue.createIssue()
+            }
           }
           catch (err) {
             println 'something broke'
