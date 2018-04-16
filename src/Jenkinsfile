@@ -1,6 +1,7 @@
 @Library('shared-libs')
 import groovy.transform.Field;
-import odos.libs.*;
+import odos.libs.GithubIssue;
+import odos.libs.GithubStatus;
 def printInfo() {
   def items = [
   ghprbActualCommit,
