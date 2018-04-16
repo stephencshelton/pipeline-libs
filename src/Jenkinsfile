@@ -1,4 +1,4 @@
-@ibrary('shared-libs')
+@Library('shared-libs')
 import groovy.transform.Field;
 import odos.libs.*;
 def printInfo() {
