@@ -43,6 +43,7 @@ pipeline {
           }
           catch (err) {
             println 'something broke'
+            throw err
           }
         }
       }
