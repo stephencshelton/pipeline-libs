@@ -1,9 +1,6 @@
 import groovy.transform.Field;
-@Field buildStatus = true
 
-def setBuildStatus(boolean name=''){
-  buildStatus=name
-}
+@Library('shared-libs')
 
 def printInfo() {
   def items = [
@@ -32,10 +29,19 @@ pipeline {
       steps {
         script {
           try {
-            printInfo() 
+            withCredentials([usernamePassword(credentialsId: 'amazon', usernameVariable: 'USERNAME', passwordVariable: 'TOKEN')]) {
+              printInfo() 
+              def githubIssue = new GithubIssue()
+              githubIssue.setBody("testing things")
+              githubIssue.setTitle("Issue Title: ${ghprbSourceBranch}")
+              githubIssue.setAuthor(ghprbActualCommitAuthor)
+              githubIssue.setToken(TOKEN)
+              githubIssue.setOrgName('stephencshelton')
+              githubIssue.setRepoName('pipeline-libs')
+              githubIssue.createIssue()
           }
           catch (err) {
-            setBuildStatus(false)
+            println 'something broke'
           }
         }
       }
@@ -43,19 +49,7 @@ pipeline {
     stage('notification') {
       agent { label 'master' }
       steps {
-      //TODO: Find sane way to correlate github names to slack names, maybe Full Names except Jon
-        script {
-          if(buildStatus) {
-            //TODO implement slack notifier class or talk with jon about the plugin, 
-            //slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-            println "Build Status: ${buildStatus}"
-          }
-          else {
-            //Open issue on failure and close PR to prevent spamming
-            println "Build Status: ${buildStatus}"
-            //slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-          }
-        }
+        echo "notification"
       }
     }
   }
