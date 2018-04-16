@@ -29,7 +29,7 @@ pipeline {
       steps {
         script {
           try {
-            withCredentials([usernamePassword(credentialsId: 'amazon', usernameVariable: 'USERNAME', passwordVariable: 'TOKEN')]) {
+            withCredentials([usernamePassword(credentialsId: '6SY24UieZprtlw1M3NdpiTvo1CfSFt9vPqVlzSqJ', usernameVariable: 'USERNAME', passwordVariable: 'TOKEN')]) {
               printInfo() 
               GithubIssue githubIssue = new GithubIssue()
               githubIssue.setBody("testing things")
