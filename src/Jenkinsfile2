@@ -45,7 +45,7 @@ pipeline {
           }
         }
         steps {
-        echo 'triggered'
+        echo GIT_BRANCH
         }
       }
     }
