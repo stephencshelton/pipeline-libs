@@ -45,10 +45,6 @@ pipeline {
           script {
               makeStatus('Build', 'success')
             }
-            catch(err) {
-              makeStatus('Build', 'failure')
-              throw err
-            } 
         }
     }
     stage('Test'){
@@ -62,10 +58,6 @@ pipeline {
         script {
               makeStatus('Test', 'success')
             }
-            catch(err) {
-              makeStatus('Test', 'failure') 
-              throw err
-            }
         }
       }
     stage('SonarQube Analysis'){
@@ -78,10 +70,6 @@ pipeline {
       steps {
         script {
               makeStatus('SonarQube', 'success')
-            }
-            catch(err) {
-              makeStatus('SonarQube', 'failure')
-              throw err
             }
         }
       }
