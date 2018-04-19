@@ -2,73 +2,97 @@
 import groovy.transform.Field;
 import odos.libs.GithubIssue;
 import odos.libs.GithubStatus;
-def printInfo() {
-  def items = [
-  ghprbActualCommit,
-  ghprbActualCommitAuthor,
-  ghprbActualCommitAuthorEmail,
-  ghprbPullDescription,
-  ghprbPullId,
-  ghprbPullLink,
-  ghprbPullTitle,
-  ghprbSourceBranch,
-  ghprbTargetBranch,
-  ghprbCommentBody,
-  sha1
-  ]
-  items.each { item ->
-  println item
-  }
-}
 
 def makeStatus(String stage, String status) {
   withCredentials([usernamePassword(credentialsId: '6SY24UieZprtlw1M3NdpiTvo1CfSFt9vPqVlzSqJ', usernameVariable: 'USERNAME', passwordVariable: 'TOKEN')]) {
     GithubStatus githubStatus = new GithubStatus()
-    def ECR_IMAGE_NAME = 'testing'
     githubStatus.setToken(TOKEN)
     githubStatus.setStatus(status)
     githubStatus.setDescription("${stage}:${status}")
     githubStatus.setStatusContext("${ECR_IMAGE_NAME}/${stage}")
     githubStatus.setGitCommit(GIT_COMMIT)
-    githubStatus.setRepoName('pipeline-libs')
-    githubStatus.setOrgName('stephencshelton')
     githubStatus.setBuildUrl(BUILD_URL)
     githubStatus.createStatus()
   }
 }
 
+def makeIssue(String stage) {
+  withCredentials([usernamePassword(credentialsId: '6SY24UieZprtlw1M3NdpiTvo1CfSFt9vPqVlzSqJ', usernameVariable: 'USERNAME', passwordVariable: 'TOKEN')]) {
+    GithubIssue githubIssue = new GithubIssue()
+    githubIssue.setToken(TOKEN)
+    githubIssue.setIssueBody("Error during build, check ${BUILD_URL}")
+    githubIssue.setIssueTitle("${ghprbSourceBranch} ${ECR_IMAGE_NAME} ${stage} Failure")
+    githubIssue.setAuthor([ghprbActualCommitAuthor])
+    githubIssue.createIssue()
+  }
+}
+
 pipeline {
   agent none
-  stages {
-    stage('testing') {
-    agent { label 'master' }
-      steps {
-        script {
-          try {
-            withCredentials([usernamePassword(credentialsId: '6SY24UieZprtlw1M3NdpiTvo1CfSFt9vPqVlzSqJ', usernameVariable: 'USERNAME', passwordVariable: 'TOKEN')]) {
-              GithubIssue githubIssue = new GithubIssue()
-              githubIssue.setIssueBody("testing things")
-              githubIssue.setIssueTitle("Issue Title ${ghprbSourceBranch}")
-              githubIssue.setAuthor([ghprbActualCommitAuthor])
-              githubIssue.setToken(TOKEN)
-              githubIssue.setOrgName('stephencshelton')
-              githubIssue.setRepoName('pipeline-libs')
-              githubIssue.createIssue()
+  environment {
+    REGISTRY_URL      = '998750339583.dkr.ecr.us-east-1.amazonaws.com'
+    ECR_IMAGE_NAME = 'odos/notifications'
+    DOCKER_IMAGE_NAME = 'sample'
+  }
+  stage('Build') {
+       agent {
+          docker { 
+            image '998750339583.dkr.ecr.us-east-1.amazonaws.com/sevatec/jhipster-gradle:latest'
+            args '-v /home/ec2-user/.gradle:/home/gradle/.gradle -w /home/gradle/project'
+          }
+        }
+        steps {
+          script {
+              makeStatus('Build', 'success')
             }
-            makeStatus('Build', 'success')
-          }
-          catch (err) {
-            println 'something broke'
-            makeStatus('Build', 'success')
-            throw err
-          }
+            catch(err) {
+              makeStatus('Build', 'failure')
+              throw err
+            } 
         }
       }
     }
-    stage('notification') {
-      agent { label 'master' }
+    stage('Test'){
+      agent {
+          docker { 
+            image '998750339583.dkr.ecr.us-east-1.amazonaws.com/sevatec/jhipster-gradle:latest'
+            args '-v /home/ec2-user/.gradle:/home/gradle/.gradle -w /home/gradle/project'
+          }
+      }
       steps {
-        echo "notification"
+        script {
+              makeStatus('Test', 'success')
+            }
+            catch(err) {
+              makeStatus('Test', 'failure') 
+              throw err
+            }
+        }
+      }
+    }
+    stage('SonarQube Analysis'){
+      agent {
+          docker { 
+            image '998750339583.dkr.ecr.us-east-1.amazonaws.com/sevatec/jhipster-gradle:latest'
+            args '--network=jenkinspipeline_sonar-network -v /home/ec2-user/.gradle:/home/gradle/.gradle -w /home/gradle/project'
+          }
+      }
+      steps {
+        script {
+              makeStatus('SonarQube', 'success')
+            }
+            catch(err) {
+              makeStatus('SonarQube', 'failure')
+              throw err
+            }
+        }
+      }
+    }
+  }
+  post {
+    always {
+      node('master') {
+        cleanWs()
       }
     }
   }
