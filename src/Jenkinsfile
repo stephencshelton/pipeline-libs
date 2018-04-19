@@ -21,6 +21,22 @@ def printInfo() {
   }
 }
 
+def makeStatus(String stage, String status) {
+  withCredentials([usernamePassword(credentialsId: '6SY24UieZprtlw1M3NdpiTvo1CfSFt9vPqVlzSqJ', usernameVariable: 'USERNAME', passwordVariable: 'TOKEN')]) {
+    GithubStatus githubStatus = new GithubStatus()
+    def ECR_IMAGE_NAME = 'testing'
+    githubStatus.setToken(TOKEN)
+    githubStatus.setStatus(status)
+    githubStatus.setDescription("${stage}:${status}")
+    githubStatus.setStatusContext("${ECR_IMAGE_NAME}/${stage}")
+    githubStatus.setGitCommit(GIT_COMMIT)
+    githubStatus.setRepoName('pipeline-libs')
+    githubStatus.setOrgName('stephencshelton')
+    githubStatus.setBuildUrl(BUILD_URL)
+    githubStatus.createStatus()
+  }
+}
+
 pipeline {
   agent none
   stages {
@@ -39,9 +55,11 @@ pipeline {
               githubIssue.setRepoName('pipeline-libs')
               githubIssue.createIssue()
             }
+            makeStatus('Build', 'success')
           }
           catch (err) {
             println 'something broke'
+            makeStatus('Build', 'success')
             throw err
           }
         }
