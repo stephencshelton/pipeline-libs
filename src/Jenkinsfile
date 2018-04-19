@@ -63,25 +63,5 @@ pipeline {
             }
         }
       }
-    stage('SonarQube Analysis'){
-      agent {
-          docker { 
-            image '998750339583.dkr.ecr.us-east-1.amazonaws.com/sevatec/jhipster-gradle:latest'
-            args '--network=jenkinspipeline_sonar-network -v /home/ec2-user/.gradle:/home/gradle/.gradle -w /home/gradle/project'
-          }
-      }
-      steps {
-        script {
-              makeStatus('SonarQube', 'success')
-            }
-        }
-      }
-    }
   }
-  post {
-    always {
-      node('master') {
-        cleanWs()
-      }
-    }
-  }
+}
