@@ -10,7 +10,9 @@ def makeStatus(String stage, String status) {
     githubStatus.setStatus(status)
     githubStatus.setDescription("${stage}:${status}")
     githubStatus.setStatusContext("${ECR_IMAGE_NAME}/${stage}")
-    githubStatus.setGitCommit(GIT_COMMIT)
+    githubStatus.setRepoName('pipeline-libs')
+    githubStatus.setOrgName('stephencshelton')
+    githubStatus.setGitCommit(ghprbActualCommit)
     githubStatus.setBuildUrl(BUILD_URL)
     githubStatus.createStatus()
   }
