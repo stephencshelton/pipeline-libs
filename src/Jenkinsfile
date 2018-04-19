@@ -34,6 +34,7 @@ pipeline {
     ECR_IMAGE_NAME = 'odos/notifications'
     DOCKER_IMAGE_NAME = 'sample'
   }
+  stages {
   stage('Build') {
        agent {
           docker { 
@@ -74,6 +75,7 @@ pipeline {
         }
       }
     }
+  }
   post {
     always {
       node('master') {
