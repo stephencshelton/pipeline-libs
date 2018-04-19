@@ -50,7 +50,6 @@ pipeline {
               throw err
             } 
         }
-      }
     }
     stage('Test'){
       agent {
@@ -69,7 +68,6 @@ pipeline {
             }
         }
       }
-    }
     stage('SonarQube Analysis'){
       agent {
           docker { 
@@ -88,7 +86,6 @@ pipeline {
         }
       }
     }
-  }
   post {
     always {
       node('master') {
