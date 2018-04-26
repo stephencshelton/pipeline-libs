@@ -32,15 +32,15 @@ def makeIssue(String stage) {
 pipeline {
   agent none
   environment {
-    REGISTRY_URL      = '998750339583.dkr.ecr.us-east-1.amazonaws.com'
-    ECR_IMAGE_NAME = 'odos/notifications'
+    REGISTRY_URL      = '123123.dkr.ecr.us-east-1.amazonaws.com'
+    ECR_IMAGE_NAME = 'image/sample'
     DOCKER_IMAGE_NAME = 'sample'
   }
   stages {
   stage('Build') {
        agent {
           docker { 
-            image '998750339583.dkr.ecr.us-east-1.amazonaws.com/sevatec/jhipster-gradle:latest'
+            image '123123.dkr.ecr.us-east-1.amazonaws.com/jhipster-gradle:latest'
             args '-v /home/ec2-user/.gradle:/home/gradle/.gradle -w /home/gradle/project'
           }
         }
