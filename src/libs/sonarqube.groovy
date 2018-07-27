@@ -8,7 +8,7 @@ Requirements:
 Needs a machine with curl
 */
 
-package some.path;
+package libs;
 import groovy.transform.Field;
 
 @Field String globalServiceName = ''
