@@ -18,7 +18,7 @@ import groovy.transform.Field;
 
 @Field String globalToken = ''
 @Field String globalGithubApiUrl = 'https://api.github.com'
-@Field String globalRepoName = 'jh-reference-architecture'
+@Field String globalRepoName = 'myUSCIS'
 @Field String globalOrgName = 'SevatecInc'
 @Field String globalServiceUser = 'stephencshelton'
 @Field ArrayList globalAuthor = []
