@@ -12,15 +12,15 @@ The following need to be set before you call createStatus()
 Requirements:
 Needs a machine with curl
 */
-package src.libs;
+package jhdemo.libs;
 import groovy.json.*;
 import groovy.transform.Field;
 
 @Field String globalToken = ''
 @Field String globalGithubApiUrl = 'https://api.github.com'
-@Field String globalRepoName = ''
-@Field String globalOrgName = ''
-@Field String globalServiceUser = ''
+@Field String globalRepoName = 'jh-reference-architecture'
+@Field String globalOrgName = 'SevatecInc'
+@Field String globalServiceUser = 'stephencshelton'
 @Field ArrayList globalAuthor = []
 @Field String globalIssueBody = ''
 @Field String globalIssueTitle = ''
