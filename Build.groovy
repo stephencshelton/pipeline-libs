@@ -5,7 +5,7 @@ pipeline {
     stage('Pre-Build') {
       agent { label 'master' }
       steps {
-        echo $GIT_BRANCH     
+        sh(script: 'env', returnStdout: true)
       }
     }
   }
