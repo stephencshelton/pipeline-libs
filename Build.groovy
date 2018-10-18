@@ -5,7 +5,7 @@ pipeline {
     stage('Pre-Build') {
       agent { label 'master' }
       steps {
-        sh(script: 'env', returnStdout: true)
+        sh(script: 'env')
       }
     }
   }
